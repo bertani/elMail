@@ -1,0 +1,2 @@
+This is a simple eMail client written using the Enlightenment Fonduation Libraries in Python.
+You can receive your email from any IMAP server and send them using SMTP.
