@@ -227,7 +227,15 @@ class eMail:
                 for message in messages[author]:
                     email_list.append(message['id'])
                 self.mainList.item_append(author, None, None, partial(self._show_messages, email_list))
-        elif filter=="subject": pass
+        elif filter=="thread":
+            messages = self.backend._get_list(order_by="thread")
+            threads = messages.keys()
+            threads.sort()
+            for thread in threads:
+                email_list = []
+                for message in messages[thread]:
+                    email_list.append(message['id'])
+                self.mainList.item_append(thread, None, None, partial(self._show_messages, email_list))
         else:
             for message in self.backend._get_list(order_by=""):
                 self.mainList.item_append("[%s] %s" % (message['from'], message['subject']), None, None, partial(self._show_message, message['id'])) 
@@ -255,11 +263,9 @@ class eMail:
         self.win.destroy = (self.quit, None)
         ##
         self.innerWin = elementary.InnerWindow(self.win)
-        #self.innerWin.style_set("minimal")
         self.innerWin.size_hint_weight_set(1.0, 1.0)
         self.innerWin.size_hint_align_set(-1.0, -1.0)
         self.innerWinAnchor = elementary.AnchorView(self.innerWin)
-        #self.innerWin.content_set(self.innerWinAnchor)
         ##
         self.bg = elementary.Background(self.win)
         self.bg.size_hint_weight_set(1.0, 1.0)
@@ -284,7 +290,7 @@ class eMail:
         self.filterSelector.size_hint_align_set(-1.0, -1.0)
         self.filterSelector.item_add("data di ricezione, disposte singolarmente", "", elementary.ELM_ICON_NONE, partial(self._change_mode, ""))
         self.filterSelector.item_add("raggruppate per autore", "", elementary.ELM_ICON_NONE, partial(self._change_mode, "author"))
-        #self.filterSelector.item_add("raggruppate per thread", "", elementary.ELM_ICON_NONE, partial(self._change_mode, "thread"))
+        self.filterSelector.item_add("raggruppate per thread", "", elementary.ELM_ICON_NONE, partial(self._change_mode, "thread"))
         ##
         self.frameBox = elementary.Box(self.win)
         self.frameBox.size_hint_weight_set(1.0, 1.0)

@@ -86,8 +86,17 @@ class Backend:
     def _get_list(self, order_by="simple"):
         if order_by == "simple": return self._get_list_simple()
         elif order_by == "author": return self._get_list_by_author()
-        elif order_by == "thread": pass
+        elif order_by == "thread": return self._get_list_by_thread()
         return self._get_list_simple()
+    def _get_list_by_thread(self):
+        self.db_cursor.execute("SELECT * FROM email")
+        list = {}
+        for row in self.db_cursor:
+            message = {'id': row[0], 'date': row[1], 'from': row[2], 'subject': row[3], 'text': row[4]}
+            thread = message['subject'] if not message['subject'].startswith("Re:") else message['subject'].strip("Re:").strip()
+            if not list.has_key(thread): list[thread] = []
+            list[thread].append(message)
+        return list
     def _get_list_by_author(self):
         self.db_cursor.execute("SELECT * FROM email")
         list = {}
