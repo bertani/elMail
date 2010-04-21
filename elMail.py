@@ -26,7 +26,7 @@ from functools import partial
 from backend import Backend
 
 class eMail:
-    ver = 0.2
+    ver = 0.4
     win_title = "eMail v%s" % ver
     mode = ""
     def _message(self, msg="", timeout=5):
