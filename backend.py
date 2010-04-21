@@ -22,7 +22,7 @@
  #########################################################################
 
 from sqlite3 import dbapi2 as sqlite
-from IMAP import Protocol
+from IMAP import Protocol #from POP import Protocol
 
 from SMTP import smtp
 
