@@ -51,7 +51,7 @@ class Protocol:
         message = email.message_from_string(msg)
         from_ = message["From"] if message["From"] else get_field(message, "From")
         subject = message["Subject"] if message["Subject"] else get_field(message, "Subject")
-        date = message["Date"]
+        date = message["Date"] if message["Date"] else get_field(message, "Date")
         text = ""
         for n_, line in enumerate(str(message).split("\n")):
             if line.find(": text/plain") != -1:

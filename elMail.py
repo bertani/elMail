@@ -261,7 +261,7 @@ class eMail:
     def initUi(self):
         self.win = elementary.Window(self.win_title, elementary.ELM_WIN_BASIC)
         self.win.title_set(self.win_title)
-        self.win.destroy = (self.quit, None)
+        self.win.callback_destroy_add(self.quit, None, None)
         ##
         self.innerWin = elementary.InnerWindow(self.win)
         self.innerWin.size_hint_weight_set(1.0, 1.0)
