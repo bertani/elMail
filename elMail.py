@@ -99,49 +99,6 @@ class eMail:
         close_btn.show()
         btns.show()
         innerWin.activate()
-    def _message_single(self, msg="", _from="", _subject=""):
-        _from = _from if not _from.find("<") else _from[_from.find("<")+1:-1]
-        if not msg: return
-        innerWin = elementary.InnerWindow(self.win)
-        innerMainBox = elementary.Box(innerWin)
-        innerMainBox.size_hint_weight_set(1.0, 1.0) 
-        innerMainBox.size_hint_align_set(-1.0, -1.0)
-        innerWinAnchor = elementary.AnchorView(innerMainBox)                   
-        innerWinAnchor.text_set(self.__to_html(msg)) 
-        innerWinAnchor.size_hint_weight_set(1.0, 1.0)                          
-        innerWinAnchor.size_hint_align_set(-1.0, -1.0)
-        innerMainBox.pack_end(innerWinAnchor)
-        btns_box = elementary.Box(innerWin)
-        btns_box.horizontal_set(True)
-        btns_box.homogenous_set(True)
-        btns_box.size_hint_align_set(-1.0, -1.0)
-        cls_btn = elementary.Button(innerWin)  
-        def inwin_close(*args, **kwarks):
-            innerWin.hide()          
-        cls_btn.size_hint_weight_set(1.0, 1.0)                 
-        cls_btn.size_hint_align_set(-1.0, -1.0)                 
-        cls_btn.label_set("Chiudi")                             
-        cls_btn._callback_add('clicked', inwin_close)           
-        cls_btn.show()
-        reply_btn = elementary.Button(innerWin)                       
-        def reply(*args, **kwarks):                           
-            inwin_close()
-            self.composeNew(_to=_from, _subject="Re: %s" % _subject)     
-        reply_btn.size_hint_weight_set(1.0, 1.0)                            
-        reply_btn.size_hint_align_set(-1.0, -1.0)                     
-        reply_btn.label_set("Rispondi")                                 
-        reply_btn._callback_add('clicked', reply)               
-        reply_btn.show()
-        btns_box.pack_end(reply_btn)
-        btns_box.pack_end(cls_btn)
-        btns_box.show()
-        innerMainBox.pack_end(btns_box)
-        innerMainBox.show()
-        innerWinAnchor.size_hint_weight_set(1.0, 1.0)
-        innerWinAnchor.size_hint_align_set(-1.0, -1.0)
-        innerWinAnchor.show()
-        innerWin.content_set(innerMainBox)
-        innerWin.activate()
     def __init__(self):
         print "Wella :P"
         self.backend = Backend()
@@ -154,9 +111,6 @@ class eMail:
         if self.mode == mode: return
         self.mode = mode
         self._mainList_populate()
-    def _show_message(self, n, *args, **kwargs):
-        message = self.backend._get_message(n)
-        self._message_single("Da: <a href=''>%s</a><br><br>Oggetto: <a href=''>%s</a><br><br>Data: <a href=''>%s</a><br>%s<br><br>%s" % (message['from'], message['subject'], message['date'],"_"*100, self.__to_html(message['text'])), message['from'], message['subject'])
     def _show_messages(self, email_list, *args, **kwargs):
         innerWin = elementary.InnerWindow(self.win)
         innerMainBox = elementary.Box(innerWin)
@@ -241,7 +195,7 @@ class eMail:
                 self.mainList.item_append(thread, None, None, partial(self._show_messages, email_list))
         else:
             for message in self.backend._get_list(order_by=""):
-                self.mainList.item_append("[%s] %s" % (message['from'], message['subject']), None, None, partial(self._show_message, message['id'])) 
+                self.mainList.item_append("[%s] %s" % (message['from'], message['subject']), None, None, partial(self._show_messages, (message['id'],))) 
         self.mainList.go()
     def sync(self, *args, **kwargs):
         self._message("Controllo presenza nuovi messaggi in corso..")
