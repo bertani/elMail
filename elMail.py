@@ -103,11 +103,13 @@ class eMail:
         _from = _from if not _from.find("<") else _from[_from.find("<")+1:-1]
         if not msg: return
         innerWin = elementary.InnerWindow(self.win)
-        innerWinAnchor = elementary.AnchorView(innerWin)
-        innerWinAnchor.text_set(self.__to_html(msg))
         innerMainBox = elementary.Box(innerWin)
         innerMainBox.size_hint_weight_set(1.0, 1.0) 
-        innerMainBox.size_hint_align_set(-1.0, -1.0) 
+        innerMainBox.size_hint_align_set(-1.0, -1.0)
+        innerWinAnchor = elementary.AnchorView(innerMainBox)                   
+        innerWinAnchor.text_set(self.__to_html(msg)) 
+        innerWinAnchor.size_hint_weight_set(1.0, 1.0)                          
+        innerWinAnchor.size_hint_align_set(-1.0, -1.0)
         innerMainBox.pack_end(innerWinAnchor)
         btns_box = elementary.Box(innerWin)
         btns_box.horizontal_set(True)
