@@ -22,12 +22,13 @@
 #                                                                         #
  #########################################################################
 
+import gettext
 import ecore, elementary
 from functools import partial
 from backend import Backend
 
 class eMail:
-    ver = 0.4
+    ver = "0.4b"
     win_title = "eMail v%s" % ver
     mode = ""
     def _message(self, msg="", timeout=5):
@@ -41,8 +42,8 @@ class eMail:
         self.innerWin.activate()
         if timeout!=-1: ecore.timer_add(timeout, inwin_close)
     def composeNew(self, *args, **kwargs):
-        _to = kwargs.get("_to", "email@domain.com")
-        _subject = kwargs.get("_subject", "Oggetto!")
+        _to = kwargs.get("_to", _("email@domain.com"))
+        _subject = kwargs.get("_subject", _("Subject!"))
         def _send(*args, **kwargs):
             self.backend.send(to_entry.entry_get(), subject_entry.entry_get(), text_entry.entry_get())
             inwin_close()
@@ -67,7 +68,7 @@ class eMail:
         subject_entry.show()
         text_entry = elementary.Entry(innerWin)
         text_entry.on_mouse_down_add(select_all)
-        text_entry.entry_set("Inserisci qui il testo del messaggio")
+        text_entry.entry_set(_("Insert here the email's text"))
         text_entry.show()
         innerBox.pack_end(to_entry)
         innerBox.pack_end(subject_entry)
@@ -82,12 +83,12 @@ class eMail:
         send_btn._callback_add('clicked', _send)
         send_btn.size_hint_weight_set(1.0, 1.0)
         send_btn.size_hint_align_set(-1.0, -1.0)
-        send_btn.label_set("Invia")
+        send_btn.label_set(_("Send"))
         close_btn = elementary.Button(innerWin)
         close_btn._callback_add('clicked', inwin_close)
         close_btn.size_hint_weight_set(1.0, 1.0)
         close_btn.size_hint_align_set(-1.0, -1.0)
-        close_btn.label_set("Chiudi")
+        close_btn.label_set(_("Close"))
         btns.pack_end(send_btn)
         btns.pack_end(close_btn)
         innerMainBox.pack_end(innerBox)
@@ -100,7 +101,6 @@ class eMail:
         btns.show()
         innerWin.activate()
     def __init__(self):
-        print "Wella :P"
         self.backend = Backend()
     def __to_html(self, msg):
         msg = msg.replace("\n", "<br>")
@@ -150,7 +150,7 @@ class eMail:
             innerWin.hide()                                                  
         cls_btn.size_hint_weight_set(1.0, 1.0)                               
         cls_btn.size_hint_align_set(-1.0, -1.0)                              
-        cls_btn.label_set("Chiudi")                                          
+        cls_btn.label_set(_("Close"))                                          
         cls_btn._callback_add('clicked', inwin_close)                        
         cls_btn.show()                                                       
         reply_btn = elementary.Button(innerWin)                              
@@ -198,7 +198,7 @@ class eMail:
                 self.mainList.item_append("[%s] %s" % (message['from'], message['subject']), None, None, partial(self._show_messages, (message['id'],))) 
         self.mainList.go()
     def sync(self, *args, **kwargs):
-        self._message("Controllo presenza nuovi messaggi in corso..")
+        self._message(_("Checking your inbox for new emails.."))
         ecore.timer_add(0.1, self.sync_init)
     def sync_init(self, *args, **kawargs):
         self.backend.sync_stepbystep_init()
@@ -207,7 +207,7 @@ class eMail:
     def sync_nextstep(self, *args, **kwargs):
         if self.backend.syncronizing:
             status = self.backend.sync_next()
-            self._message("Sincronizzazione<br><br><br>Recuperati <a href=''>%s</a> messaggi su <a href=''>%s</a>" % status)
+            self._message("%s<br><br><br>%s <a href=''>%s</a> %s <a href=''>%s</a>" % (_("Sync"), _("Emails retrieved:"), status[0], _("of"), status[1]))
             ecore.timer_add(0.1, self.sync_nextstep)
         else:
             self._mainList_populate()
@@ -241,13 +241,13 @@ class eMail:
         self._mainList_populate()
         ##
         self.filterSelector = elementary.Hoversel(self.win)
-        self.filterSelector.label_set("Mostra email ordinate per")
+        self.filterSelector.label_set(_("Show emails ordered by"))
         self.filterSelector.hover_parent_set(self.win)
         self.filterSelector.size_hint_weight_set(1.0, -1.0)
         self.filterSelector.size_hint_align_set(-1.0, -1.0)
-        self.filterSelector.item_add("data di ricezione, disposte singolarmente", "", elementary.ELM_ICON_NONE, partial(self._change_mode, ""))
-        self.filterSelector.item_add("raggruppate per autore", "", elementary.ELM_ICON_NONE, partial(self._change_mode, "author"))
-        self.filterSelector.item_add("raggruppate per thread", "", elementary.ELM_ICON_NONE, partial(self._change_mode, "thread"))
+        self.filterSelector.item_add(_("ordered by date"), "", elementary.ELM_ICON_NONE, partial(self._change_mode, ""))
+        self.filterSelector.item_add(_("grouped by author"), "", elementary.ELM_ICON_NONE, partial(self._change_mode, "author"))
+        self.filterSelector.item_add(_("grouped by thread"), "", elementary.ELM_ICON_NONE, partial(self._change_mode, "thread"))
         ##
         self.frameBox = elementary.Box(self.win)
         self.frameBox.size_hint_weight_set(1.0, 1.0)
@@ -255,12 +255,12 @@ class eMail:
         self.frameBox.pack_end(self.mainList)
         ##
         self.newButton = elementary.Button(self.win)
-        self.newButton.label_set("Invia nuovo")
+        self.newButton.label_set(_("New"))
         self.newButton._callback_add('clicked', self.composeNew)
         self.newButton.size_hint_weight_set(1.0, 1.0)
         self.newButton.size_hint_align_set(-1.0, -1.0)
         self.syncButton = elementary.Button(self.win)
-        self.syncButton.label_set("Sync Inbox")
+        self.syncButton.label_set(_("Sync Inbox"))
         self.syncButton._callback_add('clicked', self.sync)
         self.syncButton.size_hint_weight_set(1.0, 1.0)
         self.syncButton.size_hint_align_set(-1.0, -1.0)
@@ -290,10 +290,10 @@ class eMail:
         self.syncButton.show()
         self.win.show()
 if __name__ == '__main__':
+    gettext.install("elMail", "./")
     main = eMail()
     elementary.init()
     elementary.scale_set(1.5)
     main.initUi()
     elementary.run()
-    print "Bye"
     elementary.shutdown()

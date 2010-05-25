@@ -33,9 +33,9 @@ class Protocol:
             self.server.login(self.config['username'], self.config['password'])
             self.server.select()
         except imaplib.IMAP4.error:
-            return (1, "User/pass errati")
+            return False
         else:
-            return (0, "Login OK")
+            return True
     def _list_count(self):
         #ritorna il numero di messaggi sul server
         status, data = self.server.search(None, 'ALL')

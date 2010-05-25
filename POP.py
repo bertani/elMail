@@ -33,9 +33,9 @@ class Protocol:
             self.server.user(self.config['username'])
             self.server.pass_(self.config['password'])
         except poplib.error_proto:
-            return (1, "User/pass errati")
+            return False
         else:
-            return (0, "Login OK")
+            return True
     def _list_count(self):
         #ritorna il numero di messaggi sul server
         return self.server.stat()[0]
