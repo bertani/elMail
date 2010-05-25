@@ -1,0 +1,76 @@
+# elMail it_IT translation.
+# Copyright (C) 2010 Thomas Bertani - Nesit
+# This file is distributed under the same license as the elMail package.
+# Thomas Bertani <sylar@anche.no>, 2010.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.4b\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-05-25 03:47+0200\n"
+"PO-Revision-Date: 2010-05-25 03:50+0200\n"
+"Last-Translator: Thomas Bertani <sylar@anche.no>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: elMail.py:44
+msgid "email@domain.com"
+msgstr ""
+
+#: elMail.py:45
+msgid "Subject!"
+msgstr "Oggetto!"
+
+#: elMail.py:70
+msgid "Insert here the email's text"
+msgstr "Inserisci qui il testo del messaggio"
+
+#: elMail.py:85
+msgid "Send"
+msgstr "Invia"
+
+#: elMail.py:90 elMail.py:152
+msgid "Close"
+msgstr "Chiudi"
+
+#: elMail.py:200
+msgid "Checking your inbox for new emails.."
+msgstr "Controllo presenza nuovi messaggi in corso.."
+
+#: elMail.py:209
+msgid "Sync"
+msgstr "Sincronizzazione"
+
+#: elMail.py:209
+msgid "Emails retrieved:"
+msgstr "Recuperati"
+
+#: elMail.py:209
+msgid "of"
+msgstr "messaggi su"
+
+#: elMail.py:243
+msgid "Show emails ordered by"
+msgstr "Mostra email ordinate per"
+
+#: elMail.py:247
+msgid "ordered by date"
+msgstr "data di ricezione, disposte singolarmente"
+
+#: elMail.py:248
+msgid "grouped by author"
+msgstr "raggruppate per autore"
+
+#: elMail.py:249
+msgid "grouped by thread"
+msgstr "raggruppate per thread"
+
+#: elMail.py:257
+msgid "New"
+msgstr "Invia nuovo"
+
+#: elMail.py:262
+msgid "Sync Inbox"
+msgstr ""
