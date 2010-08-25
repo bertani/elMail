@@ -2,7 +2,7 @@
 
  ########################################################################
 #                                                                         #
-#    This code is written by Thomas Bertani <sylar@anche.no>              #
+#    This code is written by Thomas Bertani <thomas.bertani@nesit.it>     #
 #    Copyright (C) 2010 Nesit - Via Savelli 128, 35129 Padova, ITALY      #
 #                                                                         #
 #    This file is part of elMail.                                         #
